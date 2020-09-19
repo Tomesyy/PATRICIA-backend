@@ -37,11 +37,11 @@ class AuthController extends Controller
             // $decoded = JWT::decode($token, env('JWT_SECRET'), array('HS256'));
 
             return response()->json([
-                'status' => 200,
+                'status' => 201,
                 'token' => $token,
                 'message' => 'User created successfully',
                 'data' => $newUser
-            ], 200);
+            ], 201);
 
         } catch(\Exception $err) {
             return response()->json([
