@@ -34,18 +34,16 @@ class AuthController extends Controller
             $newUser->save();
             $token = $this->generateToken($newUser);
 
-            // $decoded = JWT::decode($token, env('JWT_SECRET'), array('HS256'));
-
             return response()->json([
-                'status' => 201,
+                'status' => "success",
                 'token' => $token,
                 'message' => 'User created successfully',
                 'data' => $newUser
             ], 201);
 
-        } catch(\Exception $err) {
+        } catch(Exception $err) {
             return response()->json([
-                'status' => 400,
+                'status' => "error",
                 'message' => 'User registration failed'
             ], 400);
         }
@@ -62,20 +60,20 @@ class AuthController extends Controller
 
         if(! $userDetails){
             return response()->json([
-                'status'=>400,
+                'status'=>"error",
                 'message'=> "User has not registered"
             ], 400);
         }
 
         if(! Hash::check($request->input('password'), $userDetails->password)){
             return response()->json([
-                'status'=>400,
+                'status'=>"error",
                 'message'=> "password is incorrect"
             ], 400);
         }
         
         return response()->json([
-            'status' => 200,
+            'status' => "success",
             'token' => $this->generateToken($userDetails),
             'message' => 'User logged in successfully',
             'data' => $userDetails

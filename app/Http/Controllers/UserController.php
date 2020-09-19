@@ -10,14 +10,14 @@ class UserController extends Controller
     public function getAllUsers(Request $request){
         try {
             return response()->json([
-                'status'=> 200,
+                'status'=> "success",
                 'message'=> 'Fetched all users successfully',
                 'data'=> User::all()
             ],200);
 
-        } catch(\Exception $err){
+        } catch(Exception $err){
             return response()->json([
-                'status' => 400,
+                'status' => "error",
                 'message' => 'Error fetching all users'
             ], 400);
         }
@@ -27,12 +27,12 @@ class UserController extends Controller
         $user = User::find($id);
         if(! $user){
             return response()->json([
-                'status' => 400,
+                'status' => "error",
                 'message' => 'User does not exist'
             ], 400);
         }
         return response()->json([
-            'status'=> 200,
+            'status'=> "success",
             'message'=> 'User details found successfully',
             'data'=> $user
         ],200);
@@ -47,14 +47,14 @@ class UserController extends Controller
         $user = User::find($id);
         if(! $user){
             return response()->json([
-                'status' => 400,
+                'status' => "error",
                 'message' => 'User does not exist'
             ], 400);
         }
         $user->update($request->all());
         
         return response()->json([
-            'status'=> 200,
+            'status'=> "success",
             'message'=> 'User details updated successfully',
             'data'=> $user
         ],200);
@@ -65,14 +65,14 @@ class UserController extends Controller
         $user = User::find($id);
         if(! $user){
             return response()->json([
-                'status' => 400,
+                'status' => "error",
                 'message' => 'User does not exist'
             ], 400);
         }
         $user->delete();
 
         return response()->json([
-            'status'=> 200,
+            'status'=> "success",
             'message'=> 'User deleted successfully',
             'data'=> $user
         ],200);

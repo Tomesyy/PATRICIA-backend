@@ -21,8 +21,15 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->post('register', ['uses' => 'AuthController@registerUser']);
     $router->post('login', ['uses' => 'AuthController@loginUser']);
 
-    $router->get('users', ['uses' => 'UserController@getAllUsers']);
-    $router->get('users/{id}', ['uses' => 'UserController@getUser']);
-    $router->put('users/{id}', ['uses' => 'UserController@updateUser']);
-    $router->delete('users/{id}', ['uses' => 'UserController@deleteUser']);
+    $router->group(['prefix' => 'users'], function () use ($router) {
+        $router->get('/', ['uses' => 'UserController@getAllUsers']);
+        $router->get('{id}', ['uses' => 'UserController@getUser']);
+
+        $router->group(['middleware' => 'verify-user'], function () use ($router) {
+            $router->put('{id}', ['uses' => 'UserController@updateUser']);
+            $router->delete('{id}', ['uses' => 'UserController@deleteUser']);
+        });
+
+    });
+
 });
