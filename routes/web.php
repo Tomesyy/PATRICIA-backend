@@ -20,4 +20,9 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->post('register', ['uses' => 'AuthController@registerUser']);
     $router->post('login', ['uses' => 'AuthController@loginUser']);
+
+    $router->get('users', ['uses' => 'UserController@getAllUsers']);
+    $router->get('users/{id}', ['uses' => 'UserController@getUser']);
+    $router->put('users/{id}', ['uses' => 'UserController@updateUser']);
+    $router->delete('users/{id}', ['uses' => 'UserController@deleteUser']);
 });
