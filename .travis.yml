@@ -1,3 +1,4 @@
 language: php
 php:
   - 7.3.22
+script: vendor\bin\phpunit
