@@ -10,10 +10,10 @@
 - `php artisan migrate`
 - `php -S localhost:8000 -t public`
 
-##
-- `vendor/bin/phpunit`
+## TEST
+- run `vendor/bin/phpunit`
 
 [Click here to view API documentation](https://documenter.getpostman.com/view/8050532/TVKBZdw8)
 
 ## AUTHOR
-[Adetomiwa Adesanya](https://linkedin.com/in/adetomiwaadesanya)
+[Adetomiwa Adesanya](https://linkedin.com/in/adetomiwaadesanya) (BlackDev)
