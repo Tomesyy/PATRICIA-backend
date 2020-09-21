@@ -22,7 +22,7 @@ class VerifyUser
             return response()->json([
                 'status'=> 'error',
                 'message'=> 'Token not provided'
-            ], 400);
+            ], 401);
         }
         try {
             $decoded = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
@@ -31,19 +31,19 @@ class VerifyUser
                 return response()->json([
                     'status'=> 'error',
                     'message'=> 'Unauthorized action'
-                ], 400);
+                ], 401);
             }
             return $next($request);
         } catch(ExpiredException $e){
             return response()->json([
                 'status'=> 'error',
                 'message'=> 'Token expired'
-            ], 400);
+            ], 401);
         }catch(Exception $e){
             return response()->json([
                 'status'=> 'error',
                 'message'=> 'Error decoding token'
-            ], 400);
+            ], 401);
         }
         
     }
