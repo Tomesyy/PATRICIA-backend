@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ValidationHandler;
 
 class UserController extends Controller
 {
@@ -39,18 +40,11 @@ class UserController extends Controller
     }
 
     public function updateUser(Request $request, $id){
-        $this->validate($request, [
-            'name'=> 'string',
-            'email'=> 'email|unique:users',
-        ]);
+        $validator = new ValidationHandler();
+        $validator->updateValidator(new Request($request->all()));
+        
 
         $user = User::find($id);
-        if(! $user){
-            return response()->json([
-                'status' => "error",
-                'message' => 'User does not exist'
-            ], 400);
-        }
         $user->update($request->all());
         
         return response()->json([
@@ -63,12 +57,6 @@ class UserController extends Controller
 
     public function deleteUser(Request $request, $id){
         $user = User::find($id);
-        if(! $user){
-            return response()->json([
-                'status' => "error",
-                'message' => 'User does not exist'
-            ], 400);
-        }
         $user->delete();
 
         return response()->json([

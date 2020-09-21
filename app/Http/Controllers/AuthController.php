@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Firebase\JWT\JWT;
+use App\Http\Controllers\ValidationHandler;
 
 class AuthController extends Controller
 {
@@ -17,21 +18,15 @@ class AuthController extends Controller
      * @return Response
      */
     public function registerUser(Request $request){
-        //validator
-        $this->validate($request, [
-            'name'=> 'required|string',
-            'email'=> 'required|email|unique:users',
-            'password'=> 'required|confirmed'
-        ]);
+        $validator = new ValidationHandler();
+        $validator->registerValidator(new Request($request->all()));
 
         try {
-            $newUser = new User;
-            $newUser->name = $request->input('name');
-            $newUser->email = $request->input('email');
-            $password = $request->input('password');
-            $newUser->password = app('hash')->make($password);
-
-            $newUser->save();
+            $newUser = User::create([
+                'name' => $request->name, 
+                'email'=> $request->email,
+                'password' => app('hash')->make($request->password)
+            ]);
             $token = $this->generateToken($newUser);
 
             return response()->json([
@@ -51,10 +46,8 @@ class AuthController extends Controller
     }
 
     public function loginUser(Request $request){
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+        $validator = new ValidationHandler();
+        $validator->loginValidator(new Request($request->all()));
 
         $userDetails = User::where('email', $request->input('email'))->first();
 
@@ -69,7 +62,7 @@ class AuthController extends Controller
             return response()->json([
                 'status'=>"error",
                 'message'=> "password is incorrect"
-            ], 400);
+            ], 401);
         }
         
         return response()->json([

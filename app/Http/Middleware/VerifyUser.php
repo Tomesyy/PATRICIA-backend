@@ -23,7 +23,7 @@ class VerifyUser
         }
         try {
             $decoded = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
-            print_r($request->route('id'));
+            
             if($decoded->sub != $request->route('id')){
                 return response()->json([
                     'status'=> 'error',
