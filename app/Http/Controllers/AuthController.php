@@ -45,6 +45,13 @@ class AuthController extends Controller
 
     }
 
+    /**
+     * login a user.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+
     public function loginUser(Request $request){
         $validator = new ValidationHandler();
         $validator->loginValidator(new Request($request->all()));

@@ -8,6 +8,12 @@ use App\Http\Controllers\ValidationHandler;
 
 class UserController extends Controller
 {
+    /**
+     * Fetch all registerd users users.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function getAllUsers(Request $request){
         try {
             return response()->json([
@@ -24,6 +30,14 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Get details of a single user.
+     *
+     * @param  Request  $request
+     * @param $id - id of user
+     * @return Response
+     */
+
     public function getUser(Request $request, $id){
         $user = User::find($id);
         if(! $user){
@@ -38,6 +52,14 @@ class UserController extends Controller
             'data'=> $user
         ],200);
     }
+
+    /**
+     * update details of a single user.
+     *
+     * @param  Request  $request
+     * @param $id - id of user
+     * @return Response
+     */
 
     public function updateUser(Request $request, $id){
         $validator = new ValidationHandler();
@@ -54,6 +76,13 @@ class UserController extends Controller
         ],200);
 
     }
+    /**
+     * Delete a single user.
+     *
+     * @param  Request  $request
+     * @param $id - id of user
+     * @return Response
+     */
 
     public function deleteUser(Request $request, $id){
         $user = User::find($id);

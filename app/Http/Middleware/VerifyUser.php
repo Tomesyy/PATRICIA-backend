@@ -8,6 +8,9 @@ use App\User;
 use Firebase\JWT\JWT;
 use Firebase\JWT\ExpiredException;
 
+/**
+ * Verify that user is authorized to perform actions with token.
+ */
 
 class VerifyUser
 {
@@ -23,7 +26,7 @@ class VerifyUser
         }
         try {
             $decoded = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
-            
+
             if($decoded->sub != $request->route('id')){
                 return response()->json([
                     'status'=> 'error',
