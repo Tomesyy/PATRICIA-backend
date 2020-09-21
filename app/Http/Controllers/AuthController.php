@@ -31,9 +31,8 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => "success",
-                'token' => $token,
                 'message' => 'User created successfully',
-                'data' => $newUser
+                'data' => ['user' => $newUser, 'token' => $token]
             ], 201);
 
         } catch(Exception $err) {
@@ -74,9 +73,8 @@ class AuthController extends Controller
         
         return response()->json([
             'status' => "success",
-            'token' => $this->generateToken($userDetails),
             'message' => 'User logged in successfully',
-            'data' => $userDetails
+            'data' => ['user' => $userDetails, 'token' => $this->generateToken($userDetails)]
         ], 200);
 
     }

@@ -44,7 +44,7 @@ class UserTest extends TestCase
             'password_confirmation' => 'testing'
         ])->response->getContent();
 
-        $id = json_decode($response)->data->id;
+        $id = json_decode($response)->data->user->id;
 
         $this->put('/api/v1/users/'.$id, [
             "name"=> 'jane doe'
@@ -71,7 +71,7 @@ class UserTest extends TestCase
 
         $this->put('/api/v1/users/'.$details->id, [
             "name"=> 'jane doe',
-            "token" => json_decode($response)->token
+            "token" => json_decode($response)->data->token
         ])-> seeJsonEquals([
             'status'=> 'error',
             'message'=> 'Unauthorized action'
@@ -94,7 +94,7 @@ class UserTest extends TestCase
 
         $this->put('/api/v1/users/'.$details->id, [
             'email'=> $email,
-            "token" => json_decode($response)->token
+            "token" => json_decode($response)->data->token
         ])-> seeJsonEquals([
             'email' => ['The email has already been taken.']
         ]);
@@ -112,7 +112,7 @@ class UserTest extends TestCase
 
         $this->put('/api/v1/users/'.$details->id, [
             'email'=> 'newmail@gmail.com',
-            "token" => json_decode($response)->token
+            "token" => json_decode($response)->data->token
         ])-> seeJson([
             'status'=> "success",
             'message'=> 'User details updated successfully'
@@ -127,7 +127,7 @@ class UserTest extends TestCase
             'password_confirmation' => 'testing'
         ])->response->getContent();
 
-        $id = json_decode($response)->data->id;
+        $id = json_decode($response)->data->user->id;
 
         $this->delete('/api/v1/users/'.$id, [
             "name"=> 'jane doe'
@@ -153,7 +153,7 @@ class UserTest extends TestCase
 
         $this->delete('/api/v1/users/'.$details->id, [
             "name"=> 'jane doe',
-            "token" => json_decode($response)->token
+            "token" => json_decode($response)->data->token
         ])-> seeJsonEquals([
             'status'=> 'error',
             'message'=> 'Unauthorized action'
@@ -171,7 +171,7 @@ class UserTest extends TestCase
         $details = User::where('email', $email2)->first();
 
         $this->delete('/api/v1/users/'.$details->id, [
-            "token" => json_decode($response)->token
+            "token" => json_decode($response)->data->token
         ])-> seeJson([
             'status'=> "success",
             'message'=> 'User deleted successfully'
